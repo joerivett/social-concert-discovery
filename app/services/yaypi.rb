@@ -13,6 +13,15 @@ class Yaypi
     json['resultsPage']['results']['event'] || [] rescue []
   end
 
+  def self.artist_trackings_for_user(username)
+    return unless username.present?
+
+    response = get("/users/#{username}/artists/tracked.json")
+
+    json = JSON.parse(response)
+    json['resultsPage']['results']['artist'] || [] rescue []
+  end
+
   private
 
   API_KEY='FUJrrB2gcyUsDqRc'
