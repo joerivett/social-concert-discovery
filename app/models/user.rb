@@ -18,13 +18,15 @@ class User
 
   def friends_attendances
     @friends_attendances ||= begin
-      attendances = @friends.collect do |friend_username|
-        Yaypi.im_goings_for_user(friend_username)
+      attendances = Hash.new { |hash, event_id| hash[event_id] = EventAttendance.new }
+      @friends.each do |friend_username|
+        Yaypi.im_goings_for_user(friend_username).each do |attendance_hash|
+          event_id = attendance_hash.fetch('id')
+          attendances[event_id].event = attendance_hash
+          attendances[event_id].add_attending_user(friend_username)
+        end
       end
-
-      attendances.flatten.uniq.map do |event_hash|
-        Event.new(event_hash)
-      end
+      attendances.values
     end
   end
 
@@ -33,7 +35,4 @@ class User
       friends_attendances.collect { |friends_attendance| friends_attendance.performances.each { |perf| p perf.artist.name}  }
     end
   end
-
-
-
 end
