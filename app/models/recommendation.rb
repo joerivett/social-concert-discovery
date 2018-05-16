@@ -4,14 +4,22 @@ class Recommendation
     @because_you_like_artists = because_you_like_artists
   end
 
-  def to_str
+  def event_name
+    @event_attendance.event.display_name
+  end
+
+  def event_uri
+    @event_attendance.event.uri
+  end
+
+  def seed_artists
     artists = @because_you_like_artists.map { |artist| artist.name }
+    to_sentence(artists)
+  end
+
+  def users_going
     users_going = @event_attendance.users_going
-    str = "We recommend #{@event_attendance.event.display_name} "
-    str << "because you like #{to_sentence(artists)}. "
-    str << "#{to_sentence(users_going)} "
-    str << "#{users_going.length == 1 ? 'is' : 'are'} "
-    str << "going."
+    "#{to_sentence(users_going)} #{users_going.length == 1 ? 'is' : 'are'} going"
   end
 
   private

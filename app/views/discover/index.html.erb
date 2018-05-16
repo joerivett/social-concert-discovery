@@ -1,3 +1,6 @@
-<h>
-Hello
-</h>
+<h1>Recommendations</h1>
+<ul>
+  <% @recommendations.each do |recommendation| %>
+    <%= render(partial: 'recommendation', object: recommendation) %>
+  <% end %>
+</ul>

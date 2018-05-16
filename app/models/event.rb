@@ -1,7 +1,7 @@
 require 'date'
 
 class Event
-  attr_reader :id, :date, :display_name
+  attr_reader :id, :date, :display_name, :uri
 
   def initialize(data)
     @id = data.fetch("id")
@@ -10,6 +10,7 @@ class Event
     @performances_hash = data.fetch("performance")
     @venue = data.fetch("venue")
     @type = data.fetch("type")
+    @uri = data.fetch("uri")
   end
 
   def performances
