@@ -14,5 +14,5 @@ The project is a social concert discovery application that recommends concerts b
   2. Getting the concert attendances marked by the user's friends
   3. For any of these events that the user does not track the headline artist for (and as
      such may not know about the event already), check if there is any overlap between the
-     headliner and the user's tracked artists
+     headliner's similar artists and the user's tracked artists
   4. If there is an overlap of artists, we assume that this is a good recommendation
