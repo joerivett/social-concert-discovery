@@ -13,7 +13,7 @@ class Event
   end
 
   def performances
-    performances ||= @performances_hash.map { |performance| Artist.new(performance) }
+    performances ||= @performances_hash.map { |performance| Performance.new(performance) }
   end
 
   def ==(other)
@@ -41,7 +41,7 @@ class Event
   end
 
   def headline_performances
-    performances.select { |p| p["billing"] == "headline" }
+    @headline_performances ||= performances.select { |performance| performance.is_headline? }
   end
 
   def is_festival?

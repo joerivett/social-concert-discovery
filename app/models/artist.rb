@@ -8,6 +8,6 @@ class Artist
   end
 
   def name
-    @artist_hash['name']
+    @artist_hash['displayName']
   end
 end

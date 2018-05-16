@@ -27,4 +27,13 @@ class User
       end
     end
   end
+
+  def friends_attendances_headline_artists
+    @friends_attendances_headliners ||= begin
+      friends_attendances.collect { |friends_attendance| friends_attendance.performances.each { |perf| p perf.artist.name}  }
+    end
+  end
+
+
+
 end
