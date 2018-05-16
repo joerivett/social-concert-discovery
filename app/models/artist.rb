@@ -10,4 +10,14 @@ class Artist
   def name
     @artist_hash['displayName']
   end
+
+  def similar_artists
+    @similar_artists ||= begin
+      artists = Yaypi.similar_artists(id)
+
+      artists.map do |event_hash|
+        Artist.new(event_hash)
+      end
+    end
+  end
 end

@@ -37,6 +37,15 @@ class Yaypi
     artists
   end
 
+  def self.similar_artists(artist_id)
+    return unless artist_id.present?
+
+    response = get("/artists/#{artist_id}/similar_artists.json")
+
+    json = JSON.parse(response)
+    json['resultsPage']['results']['artist'] || [] rescue []
+  end
+
   private
 
   API_KEY='FUJrrB2gcyUsDqRc'.freeze
