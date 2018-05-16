@@ -3,6 +3,12 @@ class Artist
     @artist_hash = artist_hash
   end
 
+  def ==(other)
+    other.class == self.class &&
+    other.id == self.id
+  end
+  alias :eql? :==
+
   def id
     @artist_hash['id']
   end

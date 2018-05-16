@@ -5,14 +5,34 @@ class User
     @friends = friends
   end
 
+  def recommendations
+    @recommendations ||= begin
+      friends_attendances.collect do |event_attendance|
+        event = event_attendance.event
+        next if event.headline_performances.empty?
+
+        headliner = event.headline_performances.first.artist
+        # If the user already tracks the headline artist, they will know about this event already
+        unless tracks_artist? headliner
+          # User doesn't track this event headliner, so let's see if there's any common
+          # ground with this user's trackings and the headliner's similar artists
+          intersection = artist_trackings & headliner.similar_artists
+          unless intersection.empty?
+            # This user tracks at least one of the artists similar to this event's headliner
+            Recommendation.new(event_attendance, intersection)
+          end
+        end
+      end.compact
+    end
+  end
+
   private
 
   def artist_trackings
     @artist_trackings ||= begin
       trackings = Yaypi.artist_trackings_for_user(@username)
-      if trackings.present?
-        trackings.map { |artist_hash| Artist.new(artist_hash) }
-      end
+
+      trackings.map { |artist_hash| Artist.new(artist_hash) }
     end
   end
 
@@ -30,9 +50,7 @@ class User
     end
   end
 
-  def friends_attendances_headline_artists
-    @friends_attendances_headliners ||= begin
-      friends_attendances.collect { |friends_attendance| friends_attendance.performances.each { |perf| p perf.artist.name}  }
-    end
+  def tracks_artist?(artist)
+    artist_trackings.any? { |tracked_artist| tracked_artist.id == artist.id }
   end
 end
