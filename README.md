@@ -16,3 +16,16 @@ The project is a social concert discovery application that recommends concerts b
      such may not know about the event already), check if there is any overlap between the
      headliner's similar artists and the user's tracked artists
   4. If there is an overlap of artists, we assume that this is a good recommendation
+
+## Running
+First install required gems
+
+```
+bundle install --local
+```
+
+Then
+
+```
+bundle exec rails server
+```
