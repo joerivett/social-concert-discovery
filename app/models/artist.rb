@@ -13,6 +13,10 @@ class Artist
     @artist_hash['id']
   end
 
+  def hash
+    self.id.hash
+  end
+
   def name
     @artist_hash['displayName']
   end
