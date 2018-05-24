@@ -7,7 +7,7 @@ class SongkickAPI
   def self.im_goings_for_user(username)
     return unless username.present?
 
-    response = get("/users/#{username}/events.json?attendance=im_going")
+    response = get("/users/#{username}/events.json", "attendance=im_going")
 
     json = JSON.parse(response)
     json['resultsPage']['results']['event'] || [] rescue []
@@ -20,17 +20,18 @@ class SongkickAPI
     page = 1
     # Results are paginated. Loop until we have all tracked artists
     loop do
-      response = get("/users/#{username}/artists/tracked.json?page=#{page}")
+      response = get("/users/#{username}/artists/tracked.json", "page=#{page}")
 
       json = JSON.parse(response)
       artists_json = json['resultsPage']['results']['artist'] || [] rescue []
+
       break if artists_json.empty?
 
+      artists += artists_json
       total_artists = json['resultsPage']['totalEntries'].to_i
 
-      artists += artists_json
+      break if artists.length >= total_artists
 
-      break unless get_next_page?(artists, total_artists)
       page += 1
     end
 
@@ -48,14 +49,15 @@ class SongkickAPI
 
   private
 
-  API_KEY='FUJrrB2gcyUsDqRc'.freeze
   API_ENDPOINT = 'https://api.songkick.com/api/3.0'.freeze
 
-  def self.get(url)
-    uri = URI(API_ENDPOINT + url)
-    uri.query = uri.query.nil? ? '' : "#{uri.query}&"
-    # Append API key to url
-    uri.query << "apikey=#{API_KEY}"
+  def self.get(path, params = '')
+    params += "&" if params.length > 0
+    params += "apikey=hackday"
+
+    path += "?" + params
+
+    uri = URI(API_ENDPOINT + path)
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
@@ -67,9 +69,4 @@ class SongkickAPI
     res = http.request(req)
     res.body
   end
-
-  def self.get_next_page?(artists, total_artists)
-    artists.length < total_artists
-  end
-
 end
