@@ -48,9 +48,4 @@ class Event
   def is_festival?
     @type == "Festival"
   end
-
-  def headliner_image
-    return unless headline_performances.any?
-    "//images.staging.songkick.net/images/media/profile_images/artists/#{headline_performances.first["artist"]["id"]}/huge_avatar"
-  end
 end
