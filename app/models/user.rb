@@ -30,7 +30,7 @@ class User
 
   def artist_trackings
     @artist_trackings ||= begin
-      trackings = Yaypi.artist_trackings_for_user(@username)
+      trackings = SongkickAPI.artist_trackings_for_user(@username)
 
       trackings.map { |artist_hash| Artist.new(artist_hash) }
     end
@@ -40,7 +40,7 @@ class User
     @friends_attendances ||= begin
       attendances = Hash.new { |hash, event_id| hash[event_id] = EventAttendance.new }
       @friends.each do |friend_username|
-        Yaypi.im_goings_for_user(friend_username).each do |attendance_hash|
+        SongkickAPI.im_goings_for_user(friend_username).each do |attendance_hash|
           event_id = attendance_hash.fetch('id')
           attendances[event_id].event = attendance_hash
           attendances[event_id].add_attending_user(friend_username)

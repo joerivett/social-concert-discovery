@@ -23,7 +23,7 @@ class Artist
 
   def similar_artists
     @similar_artists ||= begin
-      artists = Yaypi.similar_artists(id)
+      artists = SongkickAPI.similar_artists(id)
 
       artists.map do |event_hash|
         Artist.new(event_hash)

@@ -1,4 +1,4 @@
-require_relative '../services/yaypi'
+require_relative '../services/songkick_api'
 
 class DiscoverController < ApplicationController
   def index

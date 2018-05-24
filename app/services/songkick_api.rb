@@ -2,7 +2,7 @@ require "json"
 require 'net/http'
 require 'net/https'
 
-class Yaypi
+class SongkickAPI
 
   def self.im_goings_for_user(username)
     return unless username.present?
